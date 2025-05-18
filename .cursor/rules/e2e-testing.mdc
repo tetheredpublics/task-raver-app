@@ -1,5 +1,5 @@
 ---
-description: 
+description: writing end to end tests (with browser)
 globs: 
 alwaysApply: false
 ---

@@ -1,6 +1,6 @@
 ---
-description: This rule explains SvelteKit conventions and best practices for fullstack development.
-globs: 
+description: 
+globs: **/*.js,**/*.ts,**/*.svelte
 alwaysApply: false
 ---
 # SvelteKit rules
