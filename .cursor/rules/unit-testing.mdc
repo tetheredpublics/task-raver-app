@@ -1,0 +1,111 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Unit Testing Best Practices
+
+## Setup
+- Vitest v3.0.0
+- `@testing-library/svelte` v5.2.4
+- `@testing-library/jest-dom` v6.6.3
+- Test files: `*.spec.ts` next to source files
+
+## Component Testing Patterns
+
+```typescript
+// Basic Component Test
+import { render, screen } from '@testing-library/svelte';
+import { describe, it, expect } from 'vitest';
+import MyComponent from './MyComponent.svelte';
+
+describe('MyComponent', () => {
+  it('renders correctly', () => {
+    render(MyComponent);
+    expect(screen.getByText('Expected Text')).toBeInTheDocument();
+  });
+
+  it('handles props', () => {
+    render(MyComponent, { title: 'Test Title' });
+    expect(screen.getByText('Test Title')).toBeInTheDocument();
+  });
+
+  it('handles events', async () => {
+    const { component } = render(MyComponent);
+    const button = screen.getByRole('button');
+    
+    let clicked = false;
+    component.$on('click', () => clicked = true);
+    
+    await button.click();
+    expect(clicked).toBe(true);
+  });
+});
+```
+
+## Store Testing
+
+```typescript
+import { get } from 'svelte/store';
+import { myStore } from './myStore';
+
+describe('myStore', () => {
+  it('updates store value', () => {
+    myStore.set('new value');
+    expect(get(myStore)).toBe('new value');
+  });
+});
+```
+
+## Best Practices
+
+1. **Test Organization**
+   - One test file per component/feature
+   - Group related tests logically
+   - Use descriptive test names
+   - Follow Arrange-Act-Assert pattern
+
+2. **Component Testing**
+   - Test rendering, props, events, store interactions
+   - Use Testing Library queries (prefer user-centric: getByRole, getByText)
+   - Test conditional rendering and edge cases
+   - Avoid testing implementation details
+
+3. **Mocking**
+   - Mock external dependencies with vi.mock()
+   - Mock browser APIs when needed
+   - Keep mocks simple and focused
+
+## Common Test Scenarios
+
+```typescript
+// Loading State
+it('shows loading state', () => {
+  render(MyComponent, { loading: true });
+  expect(screen.getByRole('status')).toHaveTextContent('Loading...');
+});
+
+// Error State
+it('displays error message', () => {
+  render(MyComponent, { error: 'Test Error' });
+  expect(screen.getByRole('alert')).toHaveTextContent('Test Error');
+});
+
+// Form Submission
+it('submits form data', async () => {
+  const { component } = render(MyForm);
+  const form = screen.getByRole('form');
+  
+  let submitted = false;
+  component.$on('submit', () => submitted = true);
+  
+  await form.submit();
+  expect(submitted).toBe(true);
+});
+```
+
+## Commands
+- `npm run test:unit` - Run all tests
+- `npm run test:unit path/to/test.spec.ts` - Run specific test
+- `npm run test:unit -- --watch` - Watch mode
+- `npm run test:unit -- --coverage` - With coverage

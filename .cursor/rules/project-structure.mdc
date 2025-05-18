@@ -1,0 +1,75 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Project Structure
+
+## Directory Structure
+```
+src/
+├── routes/     # SvelteKit routes and pages
+├── lib/        # Shared components, utilities, and types
+│   ├── components/
+│   ├── utils/
+│   └── types/
+├── app.html    # Main HTML template
+├── app.css     # Global styles
+└── app.d.ts    # TypeScript declarations
+
+e2e/           # End-to-end tests
+static/        # Static assets
+```
+
+## Key Dependencies
+
+### Core
+- SvelteKit v2.16.0
+- Svelte v5.0.0
+- TypeScript v5.0.0
+- Vite v6.2.6
+
+### Styling
+- Tailwind CSS v4.0.0
+- @tailwindcss/forms v0.5.9
+- @tailwindcss/typography v0.5.15
+
+### Testing
+- Vitest v3.0.0
+- Playwright v1.49.1
+- @testing-library/svelte v5.2.4
+- @testing-library/jest-dom v6.6.3
+
+### Code Quality
+- ESLint v9.18.0
+- Prettier v3.4.2
+- prettier-plugin-svelte v3.3.3
+- prettier-plugin-tailwindcss v0.6.11
+
+## Configuration Files
+- `svelte.config.js` - SvelteKit configuration
+- `vite.config.ts` - Vite configuration
+- `tsconfig.json` - TypeScript configuration
+- `playwright.config.ts` - E2E test configuration
+- `vitest.config.ts` - Unit test configuration
+- `.prettierrc` - Prettier rules
+- `eslint.config.js` - ESLint configuration
+
+## Development Commands
+```bash
+# Development
+npm run dev          # Start dev server
+npm run check        # Type checking
+npm run check:watch  # Watch types
+npm run format       # Format code
+npm run lint         # Lint code
+
+# Testing
+npm run test:unit    # Unit tests
+npm run test:e2e     # E2E tests
+npm run test         # All tests
+
+# Build
+npm run build        # Production build
+npm run preview      # Preview build
+```

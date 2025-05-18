@@ -1,0 +1,65 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Coding Standards
+
+## Component Structure
+```svelte
+<script lang="ts">
+  // 1. Imports
+  import { onMount } from 'svelte';
+  
+  // 2. Props
+  export let title: string;
+  
+  // 3. State
+  let count = 0;
+  
+  // 4. Functions
+  function increment() {
+    count++;
+  }
+</script>
+
+<!-- Template -->
+<div>
+  <h1>{title}</h1>
+  <button on:click={increment}>Count: {count}</button>
+</div>
+
+<style>
+  /* Scoped styles */
+</style>
+```
+
+## TypeScript Guidelines
+- Use TypeScript for all new code
+- Define proper types for all variables, functions, and components
+- Use TypeScript strict mode
+- Keep types in `lib/types/` directory
+- Use interfaces for component props
+
+## Styling Guidelines
+- Use Tailwind CSS utility classes
+- Follow mobile-first responsive design
+- Use semantic HTML elements
+- Keep styles scoped to components
+- Use CSS variables for theming
+
+## Code Organization
+- Keep components small and focused
+- Group related components together
+- Use the `lib` directory for shared code
+- Follow SvelteKit routing conventions
+- Implement proper error handling
+- Add loading states for async operations
+
+## Best Practices
+- Write tests for complex logic
+- Follow accessibility guidelines
+- Keep bundle size in mind
+- Use proper error handling
+- Implement loading states
+- Follow ESLint and Prettier configurations

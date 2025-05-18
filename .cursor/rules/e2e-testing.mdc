@@ -1,0 +1,154 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# End-to-End Testing Best Practices
+
+## Setup and Configuration
+
+- Use Playwright v1.49.1 for E2E testing
+- Configure tests in `playwright.config.ts`
+- Place tests in the `e2e/` directory
+- Use TypeScript for test files
+
+## Test File Organization
+
+- Group tests by feature or user flow
+- Use descriptive test names
+- Follow the Arrange-Act-Assert pattern
+- Keep tests independent and isolated
+
+## Basic Test Structure
+
+```typescript
+import { test, expect } from '@playwright/test';
+
+test.describe('Feature Name', () => {
+  test('should perform specific action', async ({ page }) => {
+    // Arrange
+    await page.goto('/');
+    
+    // Act
+    await page.click('button');
+    
+    // Assert
+    await expect(page.locator('.result')).toContainText('Expected Result');
+  });
+});
+```
+
+## Best Practices
+
+1. **Test Organization**
+   - Group related tests in test.describe blocks
+   - Use clear, descriptive test names
+   - Keep tests focused on user flows
+   - Maintain test independence
+
+2. **Page Navigation**
+   - Use relative URLs for internal navigation
+   - Wait for navigation to complete
+   - Handle loading states
+   - Verify page transitions
+
+3. **Element Selection**
+   - Prefer role-based selectors
+   - Use data-testid for complex selections
+   - Avoid brittle selectors (class names, text)
+   - Handle dynamic content
+
+4. **Assertions**
+   - Verify visible content
+   - Check element states
+   - Validate user interactions
+   - Test error scenarios
+
+5. **Test Data**
+   - Use test fixtures for data setup
+   - Clean up test data after tests
+   - Avoid test interdependencies
+   - Use unique test data
+
+## Common Patterns
+
+### Testing User Authentication
+```typescript
+test('user can log in', async ({ page }) => {
+  await page.goto('/login');
+  await page.fill('[name="email"]', 'test@example.com');
+  await page.fill('[name="password"]', 'password123');
+  await page.click('button[type="submit"]');
+  await expect(page).toHaveURL('/dashboard');
+});
+```
+
+### Testing Form Submissions
+```typescript
+test('can submit form', async ({ page }) => {
+  await page.goto('/form');
+  await page.fill('[name="name"]', 'Test User');
+  await page.fill('[name="email"]', 'test@example.com');
+  await page.click('button[type="submit"]');
+  await expect(page.locator('.success-message')).toBeVisible();
+});
+```
+
+### Testing API Interactions
+```typescript
+test('handles API response', async ({ page }) => {
+  // Mock API response
+  await page.route('/api/data', async route => {
+    await route.fulfill({
+      status: 200,
+      body: JSON.stringify({ data: 'test' })
+    });
+  });
+  
+  await page.goto('/');
+  await expect(page.locator('.data')).toContainText('test');
+});
+```
+
+### Testing Error States
+```typescript
+test('displays error message', async ({ page }) => {
+  await page.goto('/form');
+  await page.click('button[type="submit"]');
+  await expect(page.locator('.error-message')).toBeVisible();
+});
+```
+
+## Running Tests
+
+- Run all tests: `npm run test:e2e`
+- Run specific test file: `npm run test:e2e path/to/test.spec.ts`
+- Run tests in UI mode: `npm run test:e2e -- --ui`
+- Run tests in debug mode: `npm run test:e2e -- --debug`
+
+## Test Environment
+
+- Use different configurations for different environments
+- Handle environment variables properly
+- Set up test databases if needed
+- Configure timeouts appropriately
+
+## Debugging Tips
+
+1. **Visual Debugging**
+   - Use `await page.pause()` to pause execution
+   - Take screenshots on failure
+   - Record video of test runs
+   - Use Playwright Inspector
+
+2. **Console Debugging**
+   - Log important steps
+   - Check network requests
+   - Monitor console errors
+   - Use debug statements
+
+3. **Common Issues**
+   - Timing issues: Use proper waiting strategies
+   - Selector issues: Use reliable selectors
+   - State issues: Ensure proper setup/teardown
+   - Environment issues: Check configuration
